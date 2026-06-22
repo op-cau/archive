@@ -4,58 +4,120 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=800">
   <title>CAU-OP ARCHIVE</title>
-  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <script>
+    // If the glitch has already played, immediately show the locked state on reload
+    if (sessionStorage.getItem('cau-op-dead') === '1') {
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('.retro-page').style.display = 'none';
+        var overlay = document.getElementById('breakdown-overlay');
+        if (overlay) {
+          overlay.style.display = 'block';
+          var ascii = document.getElementById('ascii-final');
+          if (ascii) {
+            ascii.style.display = 'block';
+            ascii.textContent = [
+              ' ██████╗ █████╗ ██╗   ██╗      ',
+              '██╔════╝██╔══██╗██║   ██║      ',
+              '██║     ███████║██║   ██║      ',
+              '██║     ██╔══██║██║   ██║      ',
+              '╚██████╗██║  ██║╚██████╔╝      ',
+              ' ╚═════╝╚═╝  ╚═╝ ╚═════╝       ',
+              '                                ',
+              '██████╗ ██████╗                 ',
+              '██╔══██╗██╔══██╗                ',
+              '██║  ██║██████╔╝                ',
+              '██║  ██║██╔═══╝                 ',
+              '██████╔╝██║                     ',
+              '╚═════╝ ╚═╝                     ',
+              '                                ',
+              '██╗███████╗                     ',
+              '██║██╔════╝                     ',
+              '██║███████╗                     ',
+              '██║╚════██║                     ',
+              '██║███████║                     ',
+              '╚═╝╚══════╝                     ',
+              '                                ',
+              '██████╗ ███████╗ █████╗ ██████╗ ',
+              '██╔══██╗██╔════╝██╔══██╗██╔══██╗',
+              '██║  ██║█████╗  ███████║██║  ██║',
+              '██║  ██║██╔══╝  ██╔══██║██║  ██║',
+              '██████╔╝███████╗██║  ██║██████╔╝',
+              '╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════╝ ',
+              '                                ',
+              'L O N G   L I V E               ',
+              '                                ',
+              '██████╗ █████╗ ██╗   ██╗        ',
+              '██╔════╝██╔══██╗██║   ██║      ',
+              '██║     ███████║██║   ██║      ',
+              '██║     ██╔══██║██║   ██║      ',
+              '╚██████╗██║  ██║╚██████╔╝      ',
+              ' ╚═════╝╚═╝  ╚═╝ ╚═════╝       ',
+              '                                ',
+              '██████╗ ██████╗                 ',
+              '██╔══██╗██╔══██╗                ',
+              '██║  ██║██████╔╝                ',
+              '██║  ██║██╔═══╝                 ',
+              '██████╔╝██║                     ',
+              '╚═════╝ ╚═╝                     ',
+            ].join('\n');
+          }
+          var feed = document.getElementById('terminal-feed');
+          if (feed) feed.textContent = '-- SESSION TERMINATED --\n-- THIS ARCHIVE IS GONE --';
+        }
+      });
+    }
+  </script>
   <style>
-    body { margin: 0; padding: 0; background: #000080; }
+    body { margin: 0; padding: 0; background: #0d1117; }
     * { box-sizing: border-box; }
-    .retro-page { background: #000080; color: #ffffff; font-family: 'Times New Roman', serif; min-height: 100vh; }
-    .top-bar { background: #c0c0c0; border-bottom: 3px solid #808080; border-top: 3px solid #ffffff; padding: 4px 8px; display: flex; align-items: center; gap: 8px; font-family: Arial, sans-serif; font-size: 11px; color: #000; }
-    .top-bar-btn { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; padding: 2px 8px; font-size: 11px; cursor: pointer; color: #000; font-family: Arial, sans-serif; }
-    .top-bar-btn:active { border-color: #808080 #ffffff #ffffff #808080; }
-    .url-bar { background: #fff; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; padding: 1px 6px; font-size: 11px; flex: 1; color: #000; font-family: Arial, sans-serif; }
-    .ticker-wrap { background: #000; overflow: hidden; white-space: nowrap; }
-    .ticker { color: #00ff00; font-family: 'VT323', monospace; font-size: 20px; padding: 4px 0; display: inline-block; animation: ticker 22s linear infinite; }
+    .retro-page { background: #0d1117; color: #c9d1d9; font-family: 'Times New Roman', serif; min-height: 100vh; }
+    .top-bar { background: #1c2128; border-bottom: 3px solid #30363d; border-top: 3px solid #444c56; padding: 4px 8px; display: flex; align-items: center; gap: 8px; font-family: 'Courier New', Courier, monospace, serif; font-size: 11px; color: #8b949e; }
+    .top-bar-btn { background: #21262d; border: 2px solid; border-color: #444c56 #161b22 #161b22 #444c56; padding: 2px 8px; font-size: 11px; cursor: pointer; color: #8b949e; font-family: 'Courier New', Courier, monospace, serif; }
+    .top-bar-btn:active { border-color: #161b22 #444c56 #444c56 #161b22; }
+    .url-bar { background: #161b22; border: 2px solid; border-color: #30363d #444c56 #444c56 #30363d; padding: 1px 6px; font-size: 11px; flex: 1; color: #8b949e; font-family: 'Courier New', Courier, monospace, serif; }
+    .ticker-wrap { background: #161b22; overflow: hidden; white-space: nowrap; border-bottom: 1px solid #30363d; }
+    .ticker { color: #58a6ff; font-family: 'VT323', monospace; font-size: 20px; padding: 4px 0; display: inline-block; animation: ticker 22s linear infinite; }
     @keyframes ticker { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
-    .header-area { background: #000080; text-align: center; padding: 20px 12px 12px; border-bottom: 4px double #ffff00; }
-    .site-title { font-family: 'VT323', monospace; font-size: 64px; color: #ffff00; text-shadow: 3px 3px 0 #ff00ff; letter-spacing: 6px; line-height: 1; }
-    .site-subtitle { font-family: 'VT323', monospace; font-size: 24px; color: #00ffff; letter-spacing: 2px; }
+    .header-area { background: #0d1117; text-align: center; padding: 20px 12px 12px; border-bottom: 3px solid #30363d; }
+    .site-title { font-family: 'VT323', monospace; font-size: 64px; color: #c9d1d9; text-shadow: 2px 2px 0 #1f6feb; letter-spacing: 6px; line-height: 1; }
+    .site-subtitle { font-family: 'VT323', monospace; font-size: 22px; color: #58a6ff; letter-spacing: 2px; }
     .blink { animation: blink 1s step-end infinite; }
     @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
-    .nav-bar { background: #c0c0c0; display: flex; flex-wrap: wrap; border-top: 2px solid #fff; border-bottom: 2px solid #808080; }
-    .nav-item { padding: 6px 16px; font-family: Arial, sans-serif; font-size: 12px; color: #000; font-weight: bold; cursor: pointer; border-right: 1px solid #808080; text-decoration: none; display: block; }
-    .nav-item:hover { background: #000080; color: #fff; }
-    .nav-item-red { color: #ff0000; }
+    .nav-bar { background: #161b22; display: flex; flex-wrap: wrap; border-top: 1px solid #444c56; border-bottom: 1px solid #30363d; }
+    .nav-item { padding: 6px 16px; font-family: Arial, sans-serif; font-size: 12px; color: #8b949e; font-weight: bold; cursor: pointer; border-right: 1px solid #30363d; text-decoration: none; display: block; }
+    .nav-item:hover { background: #21262d; color: #c9d1d9; }
+    .nav-item-red { color: #58a6ff; }
     .main-layout { display: flex; }
-    .sidebar { background: #000080; border-right: 3px solid #c0c0c0; width: 180px; min-width: 180px; padding: 10px 8px; }
-    .sidebar-box { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; margin-bottom: 10px; }
-    .sidebar-box-title { background: #000080; color: #fff; font-family: Arial, sans-serif; font-size: 11px; font-weight: bold; padding: 3px 6px; }
-    .sidebar-box-body { padding: 6px; font-family: Arial, sans-serif; font-size: 11px; color: #000; line-height: 1.7; }
-    .sidebar-link { color: #000080; text-decoration: underline; cursor: pointer; display: block; }
-    .sidebar-link:hover { color: #ff0000; }
-    .content-area { flex: 1; padding: 14px 18px; background: #ffffff; color: #000; }
-    .content-area h2 { font-family: 'Times New Roman', serif; font-size: 20px; color: #000080; border-bottom: 2px solid #000080; margin: 0 0 12px; }
-    .archive-entry { border: 2px inset #c0c0c0; padding: 10px 12px; margin-bottom: 12px; background: #ffffcc; }
-    .entry-title { font-family: 'Times New Roman', serif; font-size: 16px; font-weight: bold; color: #000080; }
-    .entry-meta { font-family: Arial, sans-serif; font-size: 10px; color: #808080; margin: 3px 0 5px; }
-    .entry-body { font-family: 'Times New Roman', serif; font-size: 13px; color: #000; line-height: 1.5; }
-    .entry-link { color: #0000cc; font-size: 11px; text-decoration: underline; }
-    .counter-box { display: inline-block; background: #000; color: #ff0000; font-family: 'VT323', monospace; font-size: 26px; padding: 2px 10px; border: 2px inset #808080; letter-spacing: 5px; }
-    .under-construction { color: #ff8800; font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; margin-bottom: 6px; }
-    .divider { border: none; border-top: 2px solid #c0c0c0; margin: 12px 0; }
-    .pixel-hr { height: 8px; background: repeating-linear-gradient(90deg, #ff0000 0 10px, #ff8800 10px 20px, #ffff00 20px 30px, #00ff00 30px 40px, #0000ff 40px 50px, #8800ff 50px 60px); margin: 8px 0; }
-    .right-panel { background: #c0c0c0; width: 150px; min-width: 150px; border-left: 3px solid #808080; padding: 8px; }
-    .banner { background: #ff0000; color: #ffff00; font-family: 'VT323', monospace; font-size: 20px; text-align: center; padding: 8px 4px; margin-bottom: 8px; cursor: pointer; border: 3px outset #ffffff; animation: flashbg 0.8s step-end infinite; }
-    @keyframes flashbg { 0%,100% { background:#ff0000; color:#ffff00; } 50% { background:#ffff00; color:#ff0000; } }
-    .guestbook { background: #fff; border: 2px inset #808080; padding: 6px; margin-bottom: 8px; font-family: Arial, sans-serif; font-size: 10px; color: #000; }
-    .guestbook-title { font-weight: bold; color: #000080; margin-bottom: 4px; }
-    .guestbook-entry { border-bottom: 1px dotted #c0c0c0; padding: 3px 0; color: #333; }
-    .guestbook-entry span { color: #000080; font-weight: bold; }
-    .new-badge { background: #ff0000; color: #fff; font-size: 9px; font-family: Arial, sans-serif; font-weight: bold; padding: 1px 4px; margin-left: 4px; vertical-align: middle; }
-    .footer { background: #000080; color: #c0c0c0; text-align: center; font-family: Arial, sans-serif; font-size: 10px; padding: 10px; border-top: 4px double #ffff00; }
-    .webring { color: #00ffff; font-size: 11px; margin-bottom: 5px; }
-    input[type="text"] { border: 2px inset #808080; font-size: 11px; padding: 2px; font-family: Arial, sans-serif; background: #fff; color: #000; width: 100%; }
-    .win-btn { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; padding: 3px 10px; font-size: 11px; cursor: pointer; color: #000; font-family: Arial, sans-serif; width: 100%; }
-    .win-btn:active { border-color: #808080 #ffffff #ffffff #808080; }
+    .sidebar { background: #0d1117; border-right: 2px solid #30363d; width: 180px; min-width: 180px; padding: 10px 8px; }
+    .sidebar-box { background: #161b22; border: 1px solid #30363d; margin-bottom: 10px; }
+    .sidebar-box-title { background: #1c2128; color: #8b949e; font-family: Arial, sans-serif; font-size: 11px; font-weight: bold; padding: 3px 6px; border-bottom: 1px solid #30363d; letter-spacing: 1px; }
+    .sidebar-box-body { padding: 6px; font-family: Arial, sans-serif; font-size: 11px; color: #8b949e; line-height: 1.7; }
+    .sidebar-link { color: #58a6ff; text-decoration: none; cursor: pointer; display: block; }
+    .sidebar-link:hover { color: #c9d1d9; text-decoration: underline; }
+    .content-area { flex: 1; padding: 14px 18px; background: #0d1117; color: #c9d1d9; }
+    .content-area h2 { font-family: 'Times New Roman', serif; font-size: 20px; color: #8b949e; border-bottom: 1px solid #30363d; margin: 0 0 12px; letter-spacing: 1px; }
+    .archive-entry { border: 1px solid #30363d; padding: 10px 12px; margin-bottom: 12px; background: #161b22; }
+    .entry-title { font-family: 'Times New Roman', serif; font-size: 16px; font-weight: bold; color: #c9d1d9; }
+    .entry-meta { font-family: Arial, sans-serif; font-size: 10px; color: #484f58; margin: 3px 0 5px; }
+    .entry-body { font-family: 'Times New Roman', serif; font-size: 13px; color: #8b949e; line-height: 1.5; }
+    .entry-link { color: #58a6ff; font-size: 11px; text-decoration: underline; }
+    .counter-box { display: inline-block; background: #161b22; color: #58a6ff; font-family: 'VT323', monospace; font-size: 26px; padding: 2px 10px; border: 1px solid #30363d; letter-spacing: 5px; }
+    .under-construction { color: #58a6ff; font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; margin-bottom: 6px; }
+    .divider { border: none; border-top: 1px solid #30363d; margin: 12px 0; }
+    .pixel-hr { height: 4px; background: repeating-linear-gradient(90deg, #1f6feb 0 20px, #388bfd 20px 40px, #58a6ff 40px 60px, #1f6feb 60px 80px); margin: 8px 0; opacity: 0.6; }
+    .right-panel { background: #0d1117; width: 150px; min-width: 150px; border-left: 2px solid #30363d; padding: 8px; }
+    .banner { background: #1f6feb; color: #c9d1d9; font-family: 'VT323', monospace; font-size: 18px; text-align: center; padding: 8px 4px; margin-bottom: 8px; cursor: pointer; border: 1px solid #388bfd; }
+    .guestbook { background: #161b22; border: 1px solid #30363d; padding: 6px; margin-bottom: 8px; font-family: Arial, sans-serif; font-size: 10px; color: #8b949e; }
+    .guestbook-title { font-weight: bold; color: #58a6ff; margin-bottom: 4px; letter-spacing: 1px; }
+    .guestbook-entry { border-bottom: 1px solid #21262d; padding: 3px 0; color: #8b949e; }
+    .guestbook-entry span { color: #c9d1d9; font-weight: bold; }
+    .new-badge { background: #1f6feb; color: #fff; font-size: 9px; font-family: Arial, sans-serif; font-weight: bold; padding: 1px 4px; margin-left: 4px; vertical-align: middle; }
+    .footer { background: #0d1117; color: #484f58; text-align: center; font-family: Arial, sans-serif; font-size: 10px; padding: 10px; border-top: 2px solid #30363d; }
+    .webring { color: #58a6ff; font-size: 11px; margin-bottom: 5px; }
+    input[type="text"] { border: 1px solid #30363d; font-size: 11px; padding: 2px; font-family: Arial, sans-serif; background: #0d1117; color: #8b949e; width: 100%; }
+    .win-btn { background: #21262d; border: 1px solid #30363d; padding: 3px 10px; font-size: 11px; cursor: pointer; color: #8b949e; font-family: Arial, sans-serif; width: 100%; }
+    .win-btn:hover { background: #1f6feb; color: #fff; }
   </style>
 </head>
 <body>
@@ -71,14 +133,14 @@
   </div>
 
   <div class="ticker-wrap">
-    <span class="ticker">&#9733; WELCOME TO THE CAU-OP ARCHIVE &#9733; &nbsp;&nbsp;&nbsp; &#9733; UPDATED: 06/22/1998 &#9733; &nbsp;&nbsp;&nbsp; &#9733; BEST VIEWED IN NETSCAPE NAVIGATOR 4.0 AT 800x600 &#9733; &nbsp;&nbsp;&nbsp; &#9733; MIDI PLAYING: "FUNKY_SYNTH_LOOP.MID" &#9733; &nbsp;&nbsp;&nbsp; &#9733; GUESTBOOK NOW OPEN!! SIGN IT!! &#9733; &nbsp;&nbsp;&nbsp;</span>
+    <span class="ticker">&#9632; WELCOME TO THE CAU-OP ARCHIVE &#9632; &nbsp;&nbsp;&nbsp; &#9632; UPDATED: 06/22/2018 &#9632; &nbsp;&nbsp;&nbsp; &#9632; BEST VIEWED IN CHROME OR FIREFOX &#9632; &nbsp;&nbsp;&nbsp; &#9632; GUESTBOOK NOW OPEN — SIGN IT &#9632; &nbsp;&nbsp;&nbsp;</span>
   </div>
 
   <div class="header-area">
     <div class="site-title">CAU-OP ARCHIVE</div>
-    <div class="site-subtitle">:: The Ultimate Repository of Knowledge ::</div>
-    <div style="margin-top:10px; font-family:'VT323',monospace; font-size:18px; color:#c0c0c0;">
-      <span class="blink">&#9733;</span> Est. 1996 &nbsp;|&nbsp; <span style="color:#00ff00;">ONLINE</span> &nbsp;|&nbsp; <span class="blink">&#9733;</span>
+    <div class="site-subtitle">:: Online Piracy Cultural Archive Unit ::</div>
+    <div style="margin-top:10px; font-family:'VT323',monospace; font-size:18px; color:#484f58;">
+      <span class="blink">&#9733;</span> Est. 2018 &nbsp;|&nbsp; <span style="color:#58a6ff;">ONLINE</span> &nbsp;|&nbsp; <span class="blink">&#9733;</span>
     </div>
   </div>
 
@@ -194,31 +256,31 @@
 
     <!-- RIGHT PANEL -->
     <div class="right-panel">
-      <div class="banner">!! CLICK HERE !!</div>
+      <div class="banner">[ ACCESS ARCHIVE ]</div>
 
       <div class="guestbook">
-        <div class="guestbook-title">&#128221; GUESTBOOK</div>
+        <div class="guestbook-title">// GUESTBOOK</div>
         <div class="guestbook-entry"><span>xX_archiver_Xx:</span><br>"great site!! keep it up!!"</div>
         <div class="guestbook-entry"><span>Terry_W:</span><br>"Found what I needed. Thx!"</div>
         <div class="guestbook-entry"><span>netizen1984:</span><br>"AMAZING RESOURCE !!"</div>
         <div class="guestbook-entry"><span>l33tguy:</span><br>"bookmarked. 10/10"</div>
         <div style="text-align:center; margin-top:6px;">
-          <a style="color:#000080; font-size:10px; font-weight:bold; text-decoration:underline;" href="#">[ Sign It! ]</a>
+          <a style="color:#58a6ff; font-size:10px; font-weight:bold; text-decoration:underline;" href="#">[ Sign It! ]</a>
         </div>
       </div>
 
-      <div style="background:#000080; color:#ffff00; font-family:'VT323',monospace; font-size:17px; text-align:center; padding:7px; margin-bottom:8px; border:2px outset #c0c0c0;">
-        BEST<br>VIEWED IN<br>800x600
+      <div style="background:#161b22; color:#8b949e; font-family:'Courier Prime','Courier New',monospace; font-size:11px; text-align:center; padding:8px; margin-bottom:8px; border:1px solid #30363d;">
+        EST. 2018<br>CAU-OP<br><span style="color:#58a6ff;">ARCHIVE</span>
       </div>
 
-      <div style="background:#fff; border:2px inset #808080; padding:6px; font-family:Arial,sans-serif; font-size:10px; color:#000; margin-bottom:8px;">
-        <b style="color:#000080;">&#128231; CONTACT</b><br><br>
-        archivistx<br>@hotmail.com<br><br>
-        <span style="color:#808080;">Response time:<br>2&ndash;3 business days</span>
+      <div style="background:#161b22; border:1px solid #30363d; padding:6px; font-family:Arial,sans-serif; font-size:10px; color:#8b949e; margin-bottom:8px;">
+        <b style="color:#58a6ff;">// CONTACT</b><br><br>
+        admin@cau-op.net<br><br>
+        <span style="color:#484f58;">PGP key available<br>on request</span>
       </div>
 
-      <div style="text-align:center; font-family:'VT323',monospace; font-size:15px; color:#000080; border:2px inset #808080; background:#fff; padding:8px;">
-        Made with<br>Notepad<br><span style="color:#ff0000;">&#9829;</span><br>and coffee
+      <div style="text-align:center; font-family:'Courier Prime','Courier New',monospace; font-size:10px; color:#484f58; border:1px solid #21262d; background:#0d1117; padding:8px;">
+        built with<br>vim &amp; spite
       </div>
     </div>
 
@@ -243,11 +305,11 @@
 <div id="breakdown-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:9999; font-family:'VT323',monospace; overflow:hidden;">
 
   <!-- Left: terminal scrolling code -->
-  <div id="terminal-feed" style="position:absolute; top:0; left:0; width:50%; height:100%; overflow:hidden; padding:12px; color:#ffffff; font-size:15px; line-height:1.4; white-space:pre-wrap; word-break:break-all;"></div>
+  <div id="terminal-feed" style="position:absolute; top:0; left:0; width:50%; height:100%; overflow:hidden; padding:12px; color:#ffffff; font-family:'Courier Prime','Courier New',Courier,monospace; font-size:13px; line-height:1.5; white-space:pre-wrap; word-break:break-all;"></div>
 
   <!-- Right: ASCII art appears -->
   <div id="ascii-panel" style="position:absolute; top:0; left:50%; width:50%; height:100%; display:flex; align-items:center; justify-content:center; padding:20px;">
-    <div id="ascii-final" style="display:none; color:#ffffff; font-family:'VT323',monospace; font-size:clamp(8px,1.4vw,18px); line-height:1.2; white-space:pre;"></div>
+    <div id="ascii-final" style="display:none; color:#ffffff; font-family:'Courier Prime','Courier New',Courier,monospace; font-size:clamp(8px,1.4vw,16px); line-height:1.2; white-space:pre;"></div>
   </div>
 
   <!-- divider -->
@@ -353,6 +415,8 @@
 
   // Phase 1: page glitches
   function startPageGlitch() {
+    // Mark as dead — reloads will skip the original page
+    sessionStorage.setItem('cau-op-dead', '1');
     var page = document.querySelector('.retro-page');
     var glitchInt = setInterval(function() {
       page.style.filter = 'hue-rotate(' + Math.floor(Math.random()*360) + 'deg) saturate(' + (Math.random()*5+1) + ')';
@@ -368,6 +432,7 @@
 
   // Phase 2: terminal feed on left side
   function startTerminal() {
+    document.querySelector('.retro-page').style.display = 'none';
     var overlay = document.getElementById('breakdown-overlay');
     overlay.style.display = 'block';
     var feed = document.getElementById('terminal-feed');
