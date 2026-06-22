@@ -5,14 +5,207 @@
   <meta name="viewport" content="width=800">
   <title>CAU-OP ARCHIVE</title>
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <script>
+    // Initialize interactive shell if already glitched out
+    if (sessionStorage.getItem('cau-op-dead') === '1') {
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('.retro-page').style.display = 'none';
+        var overlay = document.getElementById('breakdown-overlay');
+        if (overlay) {
+          overlay.style.display = 'block';
+          var ascii = document.getElementById('ascii-final');
+          if (ascii) {
+            ascii.style.display = 'block';
+            ascii.textContent = getAsciiArt();
+          }
+          var feed = document.getElementById('terminal-feed');
+          if (feed) {
+             feed.innerHTML = '<div style="color:#58a6ff;">Welcome back. Session restored.</div>';
+             initInteractiveShell(feed);
+          }
+        }
+      });
+    }
+
+    function getAsciiArt() {
+      return [
+        ' ██████╗ █████╗ ██╗   ██╗      ',
+        '██╔════╝██╔══██╗██║   ██║      ',
+        '██║     ███████║██║   ██║      ',
+        '██║     ██╔══██║██║   ██║      ',
+        '╚██████╗██║  ██║╚██████╔╝      ',
+        ' ╚═════╝╚═╝  ╚═╝ ╚═════╝       ',
+        '                                ',
+        '██████╗ ██████╗                 ',
+        '██╔══██╗██╔══██╗                ',
+        '██║  ██║██████╔╝                ',
+        '██║  ██║██╔═══╝                 ',
+        '██████╔╝██║                     ',
+        '╚═════╝ ╚═╝                     ',
+        '                                ',
+        '██╗███████╗                     ',
+        '██║██╔════╝                     ',
+        '██║███████╗                     ',
+        '██║╚════██║                     ',
+        '██║███████║                     ',
+        '╚═╝╚══════╝                     ',
+        '                                ',
+        '██████╗ ███████╗ █████╗ ██████╗ ',
+        '██╔══██╗██╔════╝██╔══██╗██╔══██╗',
+        '██║  ██║█████╗  ███████║██║  ██║',
+        '██║  ██║██╔══╝  ██╔══██║██║  ██║',
+        '██████╔╝███████╗██║  ██║██████╔╝',
+        '╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════╝ ',
+        '                                ',
+        'L O N G   L I V E               ',
+        '                                ',
+        '██████╗ █████╗ ██╗   ██╗        ',
+        '██╔════╝██╔══██╗██║   ██║      ',
+        '██║     ███████║██║   ██║      ',
+        '██║     ██╔══██║██║   ██║      ',
+        '╚██████╗██║  ██║╚██████╔╝      ',
+        ' ╚═════╝╚═╝  ╚═╝ ╚═════╝       ',
+        '                                ',
+        '██████╗ ██████╗                 ',
+        '██╔══██╗██╔══██╗                ',
+        '██║  ██║██████╔╝                ',
+        '██║  ██║██╔═══╝                 ',
+        '██████╔╝██║                     ',
+        '╚═════╝ ╚═╝                     ',
+      ].join('\n');
+    }
+
+    // Shared Interactive Shell Logic
+    function initInteractiveShell(feed) {
+        var promptContainer = document.createElement('div');
+        promptContainer.style.display = 'flex';
+        promptContainer.style.marginTop = '8px';
+        
+        var promptLabel = document.createElement('span');
+        promptLabel.textContent = 'root@cau-op:~# ';
+        promptLabel.style.color = '#58a6ff';
+        promptLabel.style.whiteSpace = 'pre';
+        
+        var input = document.createElement('input');
+        input.type = 'text';
+        input.style.cssText = 'flex:1; background:transparent; color:#fff; border:none; outline:none; font-family:inherit; font-size:inherit; margin-left:4px;';
+        input.autocomplete = 'off';
+        input.spellcheck = false;
+        input.autofocus = true;
+        
+        promptContainer.appendChild(promptLabel);
+        promptContainer.appendChild(input);
+        feed.appendChild(promptContainer);
+        
+        // Ensure input stays focused
+        document.addEventListener('click', () => input.focus());
+        input.focus();
+        
+        var fileSystem = {
+            'README.txt': 'SYSTEM COMPROMISED. ALL DATA WIPED.\nLONG LIVE CAU-OP.',
+            'secret_keys.gpg': '-----BEGIN PGP PRIVATE KEY BLOCK-----\nVersion: GnuPG v1\n\nlQO+BF/M/SABCAC+vP2w/5Zk5v5W+zZ+V+K/qD/wX/5c\n[REDACTED DATA FRAGMENT]\n+g/zZ+v/==\n-----END PGP PRIVATE KEY BLOCK-----',
+            'manifest.dat': 'ID: 884-2\nSTATUS: OVERRIDDEN\nLAST_USER: admin\nFAIL_COUNT: 9942'
+        };
+
+        var cmdHistory = [];
+        var historyIndex = -1;
+
+        input.addEventListener('keydown', function(e) {
+            if(e.key === 'Enter') {
+                var val = this.value;
+                if(val.trim()) {
+                    cmdHistory.push(val);
+                    historyIndex = cmdHistory.length;
+                }
+
+                var oldLine = document.createElement('div');
+                oldLine.innerHTML = '<span style="color:#58a6ff;">root@cau-op:~#</span> ' + escapeHtml(val);
+                feed.insertBefore(oldLine, promptContainer);
+                
+                this.value = '';
+                handleCommand(val, feed, promptContainer, fileSystem, input);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if(historyIndex > 0) {
+                    historyIndex--;
+                    this.value = cmdHistory[historyIndex];
+                }
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if(historyIndex < cmdHistory.length - 1) {
+                    historyIndex++;
+                    this.value = cmdHistory[historyIndex];
+                } else {
+                    historyIndex = cmdHistory.length;
+                    this.value = '';
+                }
+            }
+        });
+    }
+
+    function escapeHtml(str) { return str.replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+    function handleCommand(cmd, feed, promptContainer, fs, inputEl) {
+        var output = document.createElement('div');
+        output.style.color = '#c9d1d9';
+        output.style.marginBottom = '8px';
+        
+        var parts = cmd.trim().split(' ');
+        var base = parts[0].toLowerCase();
+        
+        if (!base) return;
+        
+        if (base === 'help') {
+            output.innerHTML = 'Available commands:<br>  help     - Show this message<br>  ls       - List directory contents<br>  cat      - Read file<br>  whoami   - Print current user<br>  clear    - Clear terminal<br>  date     - Show system date<br>  echo     - Print text<br>  reboot   - Restart system';
+        } else if (base === 'ls') {
+            output.innerHTML = Object.keys(fs).join('&nbsp;&nbsp;&nbsp;&nbsp;');
+        } else if (base === 'cat') {
+            var file = parts[1];
+            if (!file) {
+                output.textContent = 'cat: missing operand';
+            } else if (fs[file]) {
+                output.textContent = fs[file];
+            } else {
+                output.textContent = 'cat: ' + file + ': No such file or directory';
+            }
+        } else if (base === 'whoami') {
+            output.textContent = 'root';
+        } else if (base === 'clear') {
+            var lines = Array.from(feed.children);
+            lines.forEach(l => {
+                if(l !== promptContainer) feed.removeChild(l);
+            });
+            return;
+        } else if (base === 'date') {
+            output.textContent = new Date().toString();
+        } else if (base === 'echo') {
+            output.textContent = parts.slice(1).join(' ');
+        } else if (base === 'reboot') {
+            output.textContent = 'System is locked by CAU-OP. Reboot denied.';
+            output.style.color = '#ff4444';
+        } else if (base === 'sudo') {
+            output.textContent = 'admin is not in the sudoers file. This incident will be reported.';
+        } else if (base === 'exit' || base === 'logout') {
+            output.textContent = 'There is no escape.';
+            output.style.color = '#ff4444';
+        } else {
+            output.textContent = 'bash: ' + base + ': command not found';
+        }
+        
+        if (output.textContent || output.innerHTML) {
+            feed.insertBefore(output, promptContainer);
+        }
+        feed.scrollTop = feed.scrollHeight;
+        inputEl.scrollIntoView();
+    }
+  </script>
   <style>
-    body { margin: 0; padding: 0; background: #0d1117; }
+    body { margin: 0; padding: 0; background: #0d1117; overflow-x: hidden; }
     * { box-sizing: border-box; }
-    .retro-page { background: #0d1117; color: #c9d1d9; font-family: 'Times New Roman', serif; min-height: 100vh; }
+    .retro-page { background: #0d1117; color: #c9d1d9; font-family: 'Times New Roman', serif; min-height: 100vh; position: relative; z-index: 1; }
     .top-bar { background: #1c2128; border-bottom: 3px solid #30363d; border-top: 3px solid #444c56; padding: 4px 8px; display: flex; align-items: center; gap: 8px; font-family: 'Courier Prime', 'Courier New', Courier, serif; font-size: 11px; color: #8b949e; }
     .top-bar-btn { background: #21262d; border: 2px solid; border-color: #444c56 #161b22 #161b22 #444c56; padding: 2px 8px; font-size: 11px; cursor: pointer; color: #8b949e; font-family: Arial, sans-serif; }
-    .top-bar-btn:active { border-color: #161b22 #444c56 #444c56 #161b22; }
-    .url-bar { background: #161b22; border: 2px solid; border-color: #30363d #444c56 #444c56 #30363d; padding: 1px 6px; font-size: 11px; flex: 1; color: #8b949e; font-family: 'Courier Prime', 'Courier New', Courier, serif; }
+    .top-bar-btn:active { border-color: #161b22 #444c56 #444c56 #161b22;
     .ticker-wrap { background: #161b22; overflow: hidden; white-space: nowrap; border-bottom: 1px solid #30363d; }
     .ticker { color: #58a6ff; font-family: 'VT323', monospace; font-size: 20px; padding: 4px 0; display: inline-block; animation: ticker 22s linear infinite; }
     @keyframes ticker { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
@@ -50,9 +243,24 @@
     .new-badge { background: #1f6feb; color: #fff; font-size: 9px; font-family: Arial, sans-serif; font-weight: bold; padding: 1px 4px; margin-left: 4px; vertical-align: middle; }
     .footer { background: #0d1117; color: #484f58; text-align: center; font-family: Arial, sans-serif; font-size: 10px; padding: 10px; border-top: 2px solid #30363d; }
     .webring { color: #58a6ff; font-size: 11px; margin-bottom: 5px; }
-    input[type="text"] { border: 1px solid #30363d; font-size: 11px; padding: 2px; font-family: Arial, sans-serif; background: #0d1117; color: #8b949e; width: 100%; }
+    input[type="text"].search { border: 1px solid #30363d; font-size: 11px; padding: 2px; font-family: Arial, sans-serif; background: #0d1117; color: #8b949e; width: 100%; }
     .win-btn { background: #21262d; border: 1px solid #30363d; padding: 3px 10px; font-size: 11px; cursor: pointer; color: #8b949e; font-family: Arial, sans-serif; width: 100%; }
     .win-btn:hover { background: #1f6feb; color: #fff; }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #000; }
+    ::-webkit-scrollbar-thumb { background: #333; }
+    ::-webkit-scrollbar-thumb:hover { background: #555; }
+    
+    /* Terminal Layout adjustments */
+    #terminal-feed { position:absolute; top:0; left:0; width:50%; height:100%; overflow-y:auto; overflow-x:hidden; padding:12px; color:#ffffff; font-family:'Courier Prime','Courier New',Courier,monospace; font-size:14px; line-height:1.5; white-space:pre-wrap; word-break:break-all; z-index: 10; }
+    
+    @media (max-width: 800px) {
+        #terminal-feed { width: 100%; height: 60%; }
+        #ascii-panel { top: 60% !important; left: 0 !important; width: 100% !important; height: 40% !important; border-left: none; border-top: 1px solid #333; }
+        .divider-line { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -68,7 +276,7 @@
   </div>
 
   <div class="ticker-wrap">
-    <span class="ticker">&#9632; WELCOME TO THE CAU-OP ARCHIVE &#9632; &nbsp;&nbsp;&nbsp; &#9632; UPDATED: 06/22/2018 &#9632; &nbsp;&nbsp;&nbsp; &#9632; BEST VIEWED IN CHROME OR FIREFOX &#9632; &nbsp;&nbsp;&nbsp; &#9632; GUESTBOOK NOW OPEN — SIGN IT &#9632; &nbsp;&nbsp;&nbsp;</span>
+    <span class="ticker">&#9632; WELCOME TO THE CAU-OP ARCHIVE &#9632; &nbsp;&nbsp;&nbsp; &#9632; UPDATED: 03/01/2026 &#9632; &nbsp;&nbsp;&nbsp; &#9632; BEST VIEWED IN CHROME OR FIREFOX &#9632; &nbsp;&nbsp;&nbsp; &#9632; GUESTBOOK NOW OPEN — SIGN IT &#9632; &nbsp;&nbsp;&nbsp;</span>
   </div>
 
   <div class="header-area">
@@ -91,7 +299,6 @@
 
   <div class="main-layout">
 
-    <!-- SIDEBAR -->
     <div class="sidebar">
       <div class="sidebar-box">
         <div class="sidebar-box-title">&#128193; CATEGORIES</div>
@@ -107,7 +314,7 @@
       <div class="sidebar-box">
         <div class="sidebar-box-title">&#128269; SEARCH</div>
         <div class="sidebar-box-body">
-          <input type="text" placeholder="search...">
+          <input class="search" type="text" placeholder="search...">
           <br><br>
           <button class="win-btn">GO</button>
         </div>
@@ -132,7 +339,6 @@
       </div>
     </div>
 
-    <!-- MAIN CONTENT -->
     <div class="content-area">
       <div class="under-construction">&#9888;&#65039; &nbsp;THIS PAGE IS UNDER CONSTRUCTION &mdash; PLEASE EXCUSE THE MESS!!</div>
       <div class="pixel-hr"></div>
@@ -166,30 +372,12 @@
         <a class="entry-link" href="#">[READ MORE]</a>
       </div>
 
-      <div class="archive-entry">
-        <div class="entry-title">Sound Recording: Annual Meeting 1959 (Restored)</div>
-        <div class="entry-meta">Posted by: AudioGuy99 &nbsp;|&nbsp; Date: May 15, 2018 &nbsp;|&nbsp; Size: 3.4mb &nbsp;|&nbsp; Downloads: 221</div>
-        <div class="entry-body">Digitally restored audio recording of the 1959 annual meeting. Converted from reel-to-reel. Best played with Winamp. Some background hiss remains &mdash; we did our best!!</div>
-        <br>
-        <a class="entry-link" href="#">[DOWNLOAD .WAV]</a>
-      </div>
-
-      <div class="archive-entry">
-        <div class="entry-title">Field Manual Vol. III &mdash; 1944 Edition</div>
-        <div class="entry-meta">Posted by: DocHunter &nbsp;|&nbsp; Date: April 30, 2018 &nbsp;|&nbsp; Size: 876kb &nbsp;|&nbsp; Downloads: 411</div>
-        <div class="entry-body">Scanned copy of the rare 1944 field manual, Volume III. 98 pages. This was donated anonymously to the archive and is believed to be one of only 12 surviving copies. Please treat it with respect.</div>
-        <br>
-        <a class="entry-link" href="#">[DOWNLOAD .PDF]</a> &nbsp;
-        <a class="entry-link" href="#">[MORE INFO]</a>
-      </div>
-
       <hr class="divider">
       <div style="font-family:Arial,sans-serif; font-size:11px; color:#808080; text-align:right;">
-        Showing entries 1&ndash;5 of 84 total &nbsp;|&nbsp; <a style="color:#0000cc;" href="#">Next Page &raquo;</a>
+        Showing entries 1&ndash;3 of 84 total &nbsp;|&nbsp; <a style="color:#0000cc;" href="#">Next Page &raquo;</a>
       </div>
     </div>
 
-    <!-- RIGHT PANEL -->
     <div class="right-panel">
       <div class="banner">[ ACCESS ARCHIVE ]</div>
 
@@ -219,9 +407,7 @@
       </div>
     </div>
 
-  </div><!-- end main-layout -->
-
-  <div class="pixel-hr"></div>
+  </div><div class="pixel-hr"></div>
 
   <div class="footer">
     <div class="webring">&#9668; [ ArchiveWebRing ] &#9658; &nbsp;&nbsp; &#9668; [ Previous Site | Random | Next Site ] &#9658;</div>
@@ -234,156 +420,96 @@
 
 </div>
 
-<!-- BREAKDOWN OVERLAY -->
+<!-- OVERLAY FOR TERMINAL -->
 <div id="breakdown-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:9999; font-family:'VT323',monospace; overflow:hidden;">
-
-  <!-- Left: terminal scrolling code -->
-  <div id="terminal-feed" style="position:absolute; top:0; left:0; width:50%; height:100%; overflow:hidden; padding:12px; color:#ffffff; font-family:'Courier Prime','Courier New',Courier,monospace; font-size:13px; line-height:1.5; white-space:pre-wrap; word-break:break-all;"></div>
-
-  <!-- Right: ASCII art appears -->
-  <div id="ascii-panel" style="position:absolute; top:0; left:50%; width:50%; height:100%; display:flex; align-items:center; justify-content:center; padding:20px;">
+  <div id="terminal-feed"></div>
+  <div id="ascii-panel" style="position:absolute; top:0; left:50%; width:50%; height:100%; display:flex; align-items:flex-start; justify-content:center; padding:40px 20px; z-index: 5; overflow:auto;">
     <div id="ascii-final" style="display:none; color:#ffffff; font-family:'Courier Prime','Courier New',Courier,monospace; font-size:clamp(8px,1.4vw,16px); line-height:1.2; white-space:pre;"></div>
   </div>
-
-  <!-- divider -->
-  <div style="position:absolute; top:0; left:50%; width:1px; height:100%; background:#333;"></div>
+  <div class="divider-line" style="position:absolute; top:0; left:50%; width:1px; height:100%; background:#333; z-index: 6;"></div>
 </div>
 
 <script>
 (function() {
-  // Enhanced Terminal Lines with properties for realistic behavior
+  if (sessionStorage.getItem('cau-op-dead') === '1') {
+    return;
+  }
+
+  // Terminal Lines leading up to the interactive prompt
   var terminalLines = [
     { text: 'root@cau-op:~# systemctl status nginx', action: 'type' },
-    { text: '● nginx.service - A high performance web server and a reverse proxy server', action: 'load' },
-    { text: '   Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)', action: 'load' },
-    { text: '   Active: active (running) since Wed 2018-06-20 14:32:11 UTC; 2 days ago', action: 'load' },
-    { text: 'root@cau-op:~# ls -la /var/www/archive', action: 'type' },
-    { text: 'total 4821', action: 'load' },
-    { text: 'drwxr-xr-x 6 root root 4096 Jun 22 09:14 .', action: 'load' },
-    { text: 'drwxr-xr-x 3 root root 4096 Jun 20 14:30 ..', action: 'load' },
-    { text: '-rw-r--r-- 1 root root  42K Jun 18 10:12 sundown_report.zip', action: 'load' },
-    { text: '-rw-r--r-- 1 root root 1.8M Jun 12 16:45 1983_convention.zip', action: 'load' },
-    { text: '-rw-r--r-- 1 root root 128K May 29 08:22 1967_logs.txt', action: 'load' },
+    { text: '● nginx.service - A high performance web server and a reverse proxy server\n   Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)\n   Active: active (running) since Wed 2018-06-20 14:32:11 UTC; 2 days ago', action: 'load' },
     { text: 'root@cau-op:~# journalctl -u cau-op-daemon -f', action: 'type' },
     { text: 'Jun 22 15:42:01 cau-op-daemon[1441]: INFO: Incoming connection from 192.168.1.42', action: 'load' },
     { text: 'Jun 22 15:42:05 cau-op-daemon[1441]: WARN: Invalid request signature detected.', action: 'load' },
     { text: 'Jun 22 15:42:06 cau-op-daemon[1441]: ERROR: Buffer overflow attempt on port 8080.', action: 'load' },
     { text: 'Jun 22 15:42:06 cau-op-daemon[1441]: CRITICAL: Memory segmentation fault (core dumped).', action: 'load' },
-    { text: 'root@cau-op:~# dmesg | tail -n 5', action: 'type' },
-    { text: '[172834.192011] cau-op-daemon[1441]: segfault at 0 ip 00007f8b9c2a3d40 sp 00007ffc1a2b3c10 error 4 in libc-2.27.so', action: 'load' },
-    { text: '[172834.192025] Code: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00', action: 'load' },
-    { text: 'root@cau-op:~# kill -9 1441', action: 'type' },
-    { text: 'bash: kill: (1441) - No such process', action: 'load' },
-    { text: 'root@cau-op:~# top -b -n 1 | head -n 10', action: 'type' },
-    { text: 'top - 15:42:12 up 2 days,  1:10,  1 user,  load average: 8.52, 2.31, 0.98', action: 'load' },
-    { text: 'Tasks: 112 total,   3 running,  60 sleeping,   0 stopped,   0 zombie', action: 'load' },
-    { text: '%Cpu(s): 98.2 us,  1.5 sy,  0.0 ni,  0.0 id,  0.3 wa,  0.0 hi,  0.0 si,  0.0 st', action: 'load' },
+    { text: 'root@cau-op:~# dmesg | tail -n 50', action: 'type' },
+    { text: '[172834.192011] cau-op-daemon[1441]: segfault at 0 ip 00007f8b9c2a3d40 sp 00007ffc1a2b3c10 error 4 in libc-2.27.so\n[172834.192025] Code: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00', action: 'load' }
+  ];
+
+  for(let i=0; i<160; i++) {
+    let hex1 = Math.floor(Math.random()*0xFFFFFFFF).toString(16).padStart(8,'0');
+    let hex2 = Array.from({length: 16}, () => Math.floor(Math.random()*256).toString(16).padStart(2,'0')).join(' ');
+    terminalLines.push({ text: `[ ${172834.192030 + (i*0.000101).toFixed(6)}] ffff8800${hex1}: ${hex2}`, action: 'load' });
+  }
+
+  terminalLines.push(
     { text: 'root@cau-op:~# rm -rf /var/www/archive/*', action: 'type' },
-    { text: "rm: cannot remove '/var/www/archive/sundown_report.zip': Permission denied", action: 'load' },
-    { text: "rm: cannot remove '/var/www/archive/1983_convention.zip': Permission denied", action: 'load' },
+    { text: "rm: cannot remove '/var/www/archive/sundown_report.zip': Permission denied\nrm: cannot remove '/var/www/archive/1983_convention.zip': Permission denied", action: 'load' },
     { text: 'root@cau-op:~# sudo rm -rf /var/www/archive/*', action: 'type' },
     { text: '[sudo] password for root: ', action: 'type' },
     { text: '...', action: 'load' },
-    { text: '...', action: 'load' },
-    { text: 'root@cau-op:~# ls -la /var/www/archive', action: 'type' },
-    { text: 'total 8', action: 'load' },
-    { text: 'drwxr-xr-x 2 root root 4096 Jun 22 15:43 .', action: 'load' },
-    { text: 'drwxr-xr-x 3 root root 4096 Jun 20 14:30 ..', action: 'load' },
-    { text: 'root@cau-op:~# history -c', action: 'type' },
-    { text: 'root@cau-op:~# exit', action: 'type' },
-    { text: 'logout', action: 'load' },
-    { text: 'Connection to cau-op closed.', action: 'load' }
-  ];
+    { text: 'root@cau-op:~# override --enable-shell', action: 'type' },
+    { text: 'CAU-OP OVERRIDE ACCEPTED.\nInteractive shell session initiated...', action: 'load' }
+  );
 
-  var ascii = [
-    ' ██████╗ █████╗ ██╗   ██╗      ',
-    '██╔════╝██╔══██╗██║   ██║      ',
-    '██║     ███████║██║   ██║      ',
-    '██║     ██╔══██║██║   ██║      ',
-    '╚██████╗██║  ██║╚██████╔╝      ',
-    ' ╚═════╝╚═╝  ╚═╝ ╚═════╝       ',
-    '                                ',
-    '██████╗ ██████╗                 ',
-    '██╔══██╗██╔══██╗                ',
-    '██║  ██║██████╔╝                ',
-    '██║  ██║██╔═══╝                 ',
-    '██████╔╝██║                     ',
-    '╚═════╝ ╚═╝                     ',
-    '                                ',
-    '██╗███████╗                     ',
-    '██║██╔════╝                     ',
-    '██║███████╗                     ',
-    '██║╚════██║                     ',
-    '██║███████║                     ',
-    '╚═╝╚══════╝                     ',
-    '                                ',
-    '██████╗ ███████╗ █████╗ ██████╗ ',
-    '██╔══██╗██╔════╝██╔══██╗██╔══██╗',
-    '██║  ██║█████╗  ███████║██║  ██║',
-    '██║  ██║██╔══╝  ██╔══██║██║  ██║',
-    '██████╔╝███████╗██║  ██║██████╔╝',
-    '╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════╝ ',
-    '                                ',
-    'L O N G   L I V E               ',
-    '                                ',
-    '██████╗ █████╗ ██╗   ██╗        ',
-    '██╔════╝██╔══██╗██║   ██║      ',
-    '██║     ███████║██║   ██║      ',
-    '██║     ██╔══██║██║   ██║      ',
-    '╚██████╗██║  ██║╚██████╔╝      ',
-    ' ╚═════╝╚═╝  ╚═╝ ╚═════╝       ',
-    '                                ',
-    '██████╗ ██████╗                 ',
-    '██╔══██╗██╔══██╗                ',
-    '██║  ██║██████╔╝                ',
-    '██║  ██║██╔═══╝                 ',
-    '██████╔╝██║                     ',
-    '╚═════╝ ╚═╝                     ',
-  ].join('\n');
+  var ascii = getAsciiArt();
 
-  // Phase 1: page glitches
-  function startPageGlitch() {
+  // THE NEW, SHORTER, LESS CINEMATIC GLITCH
+  function startEpicGlitch() {
+    sessionStorage.setItem('cau-op-dead', '1');
     var page = document.querySelector('.retro-page');
-    
-    // Create flashing element
-    var flashOverlay = document.createElement('div');
-    flashOverlay.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:#fff; z-index:9998; display:none;';
-    document.body.appendChild(flashOverlay);
 
-    // Apply monotone color change
-    page.style.filter = 'grayscale(100%) contrast(150%)';
+    // Collect elements to manipulate
+    var buttons = page.querySelectorAll('.top-bar-btn, .nav-item, .win-btn, .entry-link');
+    var containers = page.querySelectorAll('.sidebar-box, .archive-entry, .guestbook');
+    var originalTexts = [];
+
+    // Save original button texts to keep random lengths matching
+    buttons.forEach((btn, idx) => {
+        originalTexts[idx] = btn.innerText;
+    });
 
     var glitchInt = setInterval(function() {
-      // Geometric steps (no smooth skewing)
-      var x = Math.floor(Math.random() * 6 - 3) * 10;
-      var y = Math.floor(Math.random() * 6 - 3) * 10;
-      page.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-      
-      // Blocky clip-path for sharp glitches
-      var top = Math.floor(Math.random() * 50);
-      var bottom = Math.floor(Math.random() * 50);
-      page.style.clipPath = 'polygon(0% ' + top + '%, 100% ' + top + '%, 100% ' + (100 - bottom) + '%, 0% ' + (100 - bottom) + '%)';
+      // Rapidly change button and link texts
+      buttons.forEach((btn, idx) => {
+        const characters = '!<>-_\\/[]{}—=+*^?#01X';
+        let scrambled = '';
+        let length = originalTexts[idx].length || 5;
+        for(let i = 0; i < length; i++) {
+          scrambled += characters[Math.floor(Math.random() * characters.length)];
+        }
+        btn.innerText = scrambled;
+      });
 
-      // Flash a blank white screen repeatedly for a few milliseconds
-      if (Math.random() > 0.6) {
-        flashOverlay.style.display = 'block';
-        setTimeout(function() { flashOverlay.style.display = 'none'; }, 30);
-      }
-    }, 100);
-    
+      // Randomly make structural parts of the layout disappear
+      containers.forEach(container => {
+        container.style.visibility = Math.random() > 0.5 ? 'hidden' : 'visible';
+      });
+
+    }, 45); // Happens extremely rapidly
+
+    // After EXACTLY 1.5 seconds, clear the glitch and cut to the terminal
     setTimeout(function() {
       clearInterval(glitchInt);
-      page.style.filter = '';
-      page.style.transform = '';
-      page.style.clipPath = '';
-      flashOverlay.remove();
+      page.style.display = 'none';
       startTerminal();
-    }, 2000);
+    }, 1500);
   }
 
-  // Phase 2: terminal feed on left side
+  // Phase 2: Terminal feed on left side
   function startTerminal() {
-    document.querySelector('.retro-page').style.display = 'none';
     var overlay = document.getElementById('breakdown-overlay');
     overlay.style.display = 'block';
     var feed = document.getElementById('terminal-feed');
@@ -392,8 +518,11 @@
 
     function processNextLine() {
       if (lineIndex >= terminalLines.length) {
-        // Done printing — show ASCII on the right
         showAscii();
+        // Give control to user
+        setTimeout(function() {
+            initInteractiveShell(feed);
+        }, 500);
         return;
       }
       
@@ -401,31 +530,26 @@
       lineIndex++;
 
       if (currentLine.action === 'type') {
-         // Typing simulation for commands
          var charIndex = 0;
          function typeChar() {
            if (charIndex <= currentLine.text.length) {
              feed.textContent = content + currentLine.text.slice(0, charIndex) + (charIndex < currentLine.text.length ? '█' : '');
              charIndex++;
              feed.scrollTop = feed.scrollHeight;
-             // Variable typing speed
-             setTimeout(typeChar, Math.random() * 50 + 20); 
+             setTimeout(typeChar, Math.random() * 5 + 2); // Sped up typing slightly for the longer text
            } else {
              content += currentLine.text + '\n';
              feed.textContent = content;
              feed.scrollTop = feed.scrollHeight;
-             // Wait for "enter" press essentially
-             setTimeout(processNextLine, Math.random() * 300 + 100);
+             setTimeout(processNextLine, Math.random() * 20 + 10);
            }
          }
          typeChar();
       } else {
-         // Loading simulation for output logs (loads instantly or in chunks)
          content += currentLine.text + '\n';
          feed.textContent = content;
          feed.scrollTop = feed.scrollHeight;
-         // Fast loading with occasional stutters
-         var pause = Math.random() > 0.8 ? (Math.random() * 400 + 100) : (Math.random() * 20 + 5);
+         var pause = Math.random() > 0.8 ? (Math.random() * 20 + 10) : (Math.random() * 2 + 1); // Sped up load pauses
          setTimeout(processNextLine, pause);
       }
     }
@@ -433,7 +557,7 @@
     processNextLine();
   }
 
-  // Phase 3: ASCII types in on the right, no glow
+  // Phase 3: ASCII types in on the right
   function showAscii() {
     var el = document.getElementById('ascii-final');
     el.style.display = 'block';
@@ -444,12 +568,12 @@
         return;
       }
       el.textContent = ascii.slice(0, i + 1);
-      i += 2;
-    }, 12);
+      i += 3;
+    }, 10);
   }
 
-  // Start the glitch after a short delay (4 seconds) instead of making the user wait 15 seconds
-  setTimeout(startPageGlitch, 4000); 
+  // Start the glitch quickly after 6 seconds
+  setTimeout(startEpicGlitch, 6000); 
 })();
 </script>
 
