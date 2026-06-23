@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=800">
-  <title>CAU-OP ARCHIVE</title>
+  <title>OP-CAU ARCHIVE</title>
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
   <script>
     // Initialize interactive shell if already glitched out
-    if (sessionStorage.getItem('cau-op-dead') === '1') {
+    if (sessionStorage.getItem('op-cau-dead') === '1') {
       document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('.retro-page').style.display = 'none';
         var overlay = document.getElementById('breakdown-overlay');
@@ -29,13 +29,6 @@
 
     function getAsciiArt() {
       return [
-        ' ██████╗ █████╗ ██╗   ██╗      ',
-        '██╔════╝██╔══██╗██║   ██║      ',
-        '██║     ███████║██║   ██║      ',
-        '██║     ██╔══██║██║   ██║      ',
-        '╚██████╗██║  ██║╚██████╔╝      ',
-        ' ╚═════╝╚═╝  ╚═╝ ╚═════╝       ',
-        '                                ',
         '██████╗ ██████╗                 ',
         '██╔══██╗██╔══██╗                ',
         '██║  ██║██████╔╝                ',
@@ -50,6 +43,13 @@
         '██║███████║                     ',
         '╚═╝╚══════╝                     ',
         '                                ',
+        ' ██████╗ █████╗ ██╗   ██╗      ',
+        '██╔════╝██╔══██╗██║   ██║      ',
+        '██║     ███████║██║   ██║      ',
+        '██║     ██╔══██║██║   ██║      ',
+        '╚██████╗██║  ██║╚██████╔╝      ',
+        ' ╚═════╝╚═╝  ╚═╝ ╚═════╝       ',
+        '                                ',
         '██████╗ ███████╗ █████╗ ██████╗ ',
         '██╔══██╗██╔════╝██╔══██╗██╔══██╗',
         '██║  ██║█████╗  ███████║██║  ██║',
@@ -59,19 +59,19 @@
         '                                ',
         'L O N G   L I V E               ',
         '                                ',
-        '██████╗ █████╗ ██╗   ██╗        ',
-        '██╔════╝██╔══██╗██║   ██║      ',
-        '██║     ███████║██║   ██║      ',
-        '██║     ██╔══██║██║   ██║      ',
-        '╚██████╗██║  ██║╚██████╔╝      ',
-        ' ╚═════╝╚═╝  ╚═╝ ╚═════╝       ',
-        '                                ',
         '██████╗ ██████╗                 ',
         '██╔══██╗██╔══██╗                ',
         '██║  ██║██████╔╝                ',
         '██║  ██║██╔═══╝                 ',
         '██████╔╝██║                     ',
         '╚═════╝ ╚═╝                     ',
+        '                                ',
+        ' ██████╗ █████╗ ██╗   ██╗        ',
+        '██╔════╝██╔══██╗██║   ██║      ',
+        '██║     ███████║██║   ██║      ',
+        '██║     ██╔══██║██║   ██║      ',
+        '╚██████╗██║  ██║╚██████╔╝      ',
+        ' ╚═════╝╚═╝  ╚═╝ ╚═════╝       ',
       ].join('\n');
     }
 
@@ -82,7 +82,7 @@
         promptContainer.style.marginTop = '8px';
         
         var promptLabel = document.createElement('span');
-        promptLabel.textContent = 'root@cau-op:~# ';
+        promptLabel.textContent = 'root@op-cau:~# ';
         promptLabel.style.color = '#58a6ff';
         promptLabel.style.whiteSpace = 'pre';
         
@@ -102,7 +102,7 @@
         input.focus();
         
         var fileSystem = {
-            'README.txt': 'SYSTEM COMPROMISED. ALL DATA WIPED.\nLONG LIVE CAU-OP.',
+            'README.txt': 'SYSTEM COMPROMISED. ALL DATA WIPED.\nLONG LIVE OP-CAU.',
             'secret_keys.gpg': '-----BEGIN PGP PRIVATE KEY BLOCK-----\nVersion: GnuPG v1\n\nlQO+BF/M/SABCAC+vP2w/5Zk5v5W+zZ+V+K/qD/wX/5c\n[REDACTED DATA FRAGMENT]\n+g/zZ+v/==\n-----END PGP PRIVATE KEY BLOCK-----',
             'manifest.dat': 'ID: 884-2\nSTATUS: OVERRIDDEN\nLAST_USER: admin\nFAIL_COUNT: 9942'
         };
@@ -119,7 +119,7 @@
                 }
 
                 var oldLine = document.createElement('div');
-                oldLine.innerHTML = '<span style="color:#58a6ff;">root@cau-op:~#</span> ' + escapeHtml(val);
+                oldLine.innerHTML = '<span style="color:#58a6ff;">root@op-cau:~#</span> ' + escapeHtml(val);
                 feed.insertBefore(oldLine, promptContainer);
                 
                 this.value = '';
@@ -181,7 +181,7 @@
         } else if (base === 'echo') {
             output.textContent = parts.slice(1).join(' ');
         } else if (base === 'reboot') {
-            output.textContent = 'System is locked by CAU-OP. Reboot denied.';
+            output.textContent = 'System is locked by OP-CAU. Reboot denied.';
             output.style.color = '#ff4444';
         } else if (base === 'sudo') {
             output.textContent = 'admin is not in the sudoers file. This incident will be reported.';
@@ -272,16 +272,16 @@
     <button class="top-bar-btn">&#9654;</button>
     <button class="top-bar-btn">&#10227;</button>
     <button class="top-bar-btn">&#127968;</button>
-    <div class="url-bar">http://www.geocities.com/cau-op-archive/index.html</div>
+    <div class="url-bar">http://www.geocities.com/op-cau-archive/index.html</div>
     <button class="top-bar-btn">Go!</button>
   </div>
 
   <div class="ticker-wrap">
-    <span class="ticker">&#9632; WELCOME TO THE CAU-OP ARCHIVE &#9632; &nbsp;&nbsp;&nbsp; &#9632; UPDATED: 06/22/2018 &#9632; &nbsp;&nbsp;&nbsp; &#9632; BEST VIEWED IN CHROME OR FIREFOX &#9632; &nbsp;&nbsp;&nbsp; &#9632; GUESTBOOK NOW OPEN — SIGN IT &#9632; &nbsp;&nbsp;&nbsp;</span>
+    <span class="ticker">&#9632; WELCOME TO THE OP-CAU ARCHIVE &#9632; &nbsp;&nbsp;&nbsp; &#9632; UPDATED: 06/22/2018 &#9632; &nbsp;&nbsp;&nbsp; &#9632; BEST VIEWED IN CHROME OR FIREFOX &#9632; &nbsp;&nbsp;&nbsp; &#9632; GUESTBOOK NOW OPEN — SIGN IT &#9632; &nbsp;&nbsp;&nbsp;</span>
   </div>
 
   <div class="header-area">
-    <div class="site-title">CAU-OP ARCHIVE</div>
+    <div class="site-title">OP-CAU ARCHIVE</div>
     <div class="site-subtitle">:: Online Piracy Cultural Archive Unit ::</div>
     <div style="margin-top:10px; font-family:'VT323',monospace; font-size:18px; color:#484f58;">
       Est. 2018 &nbsp;|&nbsp; <span style="color:#58a6ff;">ONLINE</span>
@@ -394,12 +394,12 @@
       </div>
 
       <div style="background:#161b22; color:#8b949e; font-family:'Courier Prime','Courier New',monospace; font-size:11px; text-align:center; padding:8px; margin-bottom:8px; border:1px solid #30363d;">
-        EST. 2018<br>CAU-OP<br><span style="color:#58a6ff;">ARCHIVE</span>
+        EST. 2018<br>OP-CAU<br><span style="color:#58a6ff;">ARCHIVE</span>
       </div>
 
       <div style="background:#161b22; border:1px solid #30363d; padding:6px; font-family:Arial,sans-serif; font-size:10px; color:#8b949e; margin-bottom:8px;">
         <b style="color:#58a6ff;">// CONTACT</b><br><br>
-        admin@cau-op.net<br><br>
+        admin@op-cau.net<br><br>
         <span style="color:#484f58;">PGP key available<br>on request</span>
       </div>
 
@@ -412,7 +412,7 @@
 
   <div class="footer">
     <div class="webring">&#9668; [ ArchiveWebRing ] &#9658; &nbsp;&nbsp; &#9668; [ Previous Site | Random | Next Site ] &#9658;</div>
-    <div>&copy; 2016&ndash;2018 CAU-OP ARCHIVE &nbsp;|&nbsp; All Rights Reserved</div>
+    <div>&copy; 2016&ndash;2018 OP-CAU ARCHIVE &nbsp;|&nbsp; All Rights Reserved</div>
     <div style="margin-top:4px; color:#808080;">This site is optimized for Chrome and Firefox &nbsp;|&nbsp; 1080p resolution recommended</div>
     <div style="margin-top:6px;">
       Last updated: June 22, 2018
@@ -432,21 +432,21 @@
 
 <script>
 (function() {
-  if (sessionStorage.getItem('cau-op-dead') === '1') {
+  if (sessionStorage.getItem('op-cau-dead') === '1') {
     return;
   }
 
   // Terminal Lines leading up to the interactive prompt
   var terminalLines = [
-    { text: 'root@cau-op:~# systemctl status nginx', action: 'type' },
+    { text: 'root@op-cau:~# systemctl status nginx', action: 'type' },
     { text: '● nginx.service - A high performance web server and a reverse proxy server\n   Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)\n   Active: active (running) since Wed 2018-06-20 14:32:11 UTC; 2 days ago', action: 'load' },
-    { text: 'root@cau-op:~# journalctl -u cau-op-daemon -f', action: 'type' },
-    { text: 'Jun 22 15:42:01 cau-op-daemon[1441]: INFO: Incoming connection from 192.168.1.42', action: 'load' },
-    { text: 'Jun 22 15:42:05 cau-op-daemon[1441]: WARN: Invalid request signature detected.', action: 'load' },
-    { text: 'Jun 22 15:42:06 cau-op-daemon[1441]: ERROR: Buffer overflow attempt on port 8080.', action: 'load' },
-    { text: 'Jun 22 15:42:06 cau-op-daemon[1441]: CRITICAL: Memory segmentation fault (core dumped).', action: 'load' },
-    { text: 'root@cau-op:~# dmesg | tail -n 50', action: 'type' },
-    { text: '[172834.192011] cau-op-daemon[1441]: segfault at 0 ip 00007f8b9c2a3d40 sp 00007ffc1a2b3c10 error 4 in libc-2.27.so\n[172834.192025] Code: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00', action: 'load' }
+    { text: 'root@op-cau:~# journalctl -u op-cau-daemon -f', action: 'type' },
+    { text: 'Jun 22 15:42:01 op-cau-daemon[1441]: INFO: Incoming connection from 192.168.1.42', action: 'load' },
+    { text: 'Jun 22 15:42:05 op-cau-daemon[1441]: WARN: Invalid request signature detected.', action: 'load' },
+    { text: 'Jun 22 15:42:06 op-cau-daemon[1441]: ERROR: Buffer overflow attempt on port 8080.', action: 'load' },
+    { text: 'Jun 22 15:42:06 op-cau-daemon[1441]: CRITICAL: Memory segmentation fault (core dumped).', action: 'load' },
+    { text: 'root@op-cau:~# dmesg | tail -n 50', action: 'type' },
+    { text: '[172834.192011] op-cau-daemon[1441]: segfault at 0 ip 00007f8b9c2a3d40 sp 00007ffc1a2b3c10 error 4 in libc-2.27.so\n[172834.192025] Code: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00', action: 'load' }
   ];
 
   for(let i=0; i<160; i++) {
@@ -456,20 +456,20 @@
   }
 
   terminalLines.push(
-    { text: 'root@cau-op:~# rm -rf /var/www/archive/*', action: 'type' },
+    { text: 'root@op-cau:~# rm -rf /var/www/archive/*', action: 'type' },
     { text: "rm: cannot remove '/var/www/archive/sundown_report.zip': Permission denied\nrm: cannot remove '/var/www/archive/1983_convention.zip': Permission denied", action: 'load' },
-    { text: 'root@cau-op:~# sudo rm -rf /var/www/archive/*', action: 'type' },
+    { text: 'root@op-cau:~# sudo rm -rf /var/www/archive/*', action: 'type' },
     { text: '[sudo] password for root: ', action: 'type' },
     { text: '...', action: 'load' },
-    { text: 'root@cau-op:~# override --enable-shell', action: 'type' },
-    { text: 'CAU-OP OVERRIDE ACCEPTED.\nInteractive shell session initiated...', action: 'load' }
+    { text: 'root@op-cau:~# override --enable-shell', action: 'type' },
+    { text: 'OP-CAU OVERRIDE ACCEPTED.\nInteractive shell session initiated...', action: 'load' }
   );
 
   var ascii = getAsciiArt();
 
   // THE NEW, SHORTER, LESS CINEMATIC GLITCH
   function startEpicGlitch() {
-    sessionStorage.setItem('cau-op-dead', '1');
+    sessionStorage.setItem('op-cau-dead', '1');
     var page = document.querySelector('.retro-page');
 
     // Collect elements to manipulate
